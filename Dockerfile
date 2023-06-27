@@ -9,7 +9,7 @@ RUN pip install xlrd==1.2.0
 
 # Install food-volume-estimation package
 ADD food_volume_estimation/ food_volume_estimation/
-copy setup.py .
+COPY setup.py .
 RUN python setup.py install
 
 # Add model files to image

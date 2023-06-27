@@ -1,0 +1,12 @@
+FROM python:3.6
+
+# Install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip uninstall -y h5py
+RUN pip install h5py==2.10.0
+RUN pip install xlrd==1.2.0
+
+# Install food-volume-estimation package
+# ADD food_volume_estimation/ food_volume_estimation/
+# RUN python setup.py install
