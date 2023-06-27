@@ -4,7 +4,7 @@ import numpy as np
 import json
 
 # Open and encode image
-image_path = './assets/readme_assets/examples/rice_example.jpg'
+image_path = './assets/readme_assets/own_pics/rice_chicken_close.jpg'
 img = cv2.imread(image_path)
 _, img_encoded = cv2.imencode('.jpg', img)
 byte_array = img_encoded.tostring()
