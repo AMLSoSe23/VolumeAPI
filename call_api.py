@@ -22,6 +22,8 @@ response = requests.post('http://localhost:5000/predict', json=payload)
 # Parse response
 if response.status_code == 200:
     result = response.json()
+    print("Picture: ", image_path.split('/')[-1])
+    print("Plate diameter: ", payload['plate_diameter'])
     print("Food Type Match:", result['food_type_match'])
     print("Weight:", result['weight'])
     print("Volume:", result['volume'])
