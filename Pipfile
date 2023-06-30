@@ -1,0 +1,27 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+numpy = "*"
+pandas = "*"
+opencv-python = "*"
+scipy = "*"
+tensorflow = "*"
+keras = "*"
+scikit-learn = "*"
+scikit-image = "*"
+matplotlib = "*"
+pyntcloud = "*"
+pythreejs = "*"
+ipython = "*"
+flask = "*"
+fuzzywuzzy = "*"
+requests = "*"
+h5py = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.10"

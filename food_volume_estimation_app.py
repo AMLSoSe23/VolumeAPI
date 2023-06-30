@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 import tensorflow as tf
 from keras.models import Model, model_from_json
-from food_volume_estimation.volume_estimator import VolumeEstimator, DensityDatabase
+from food_volume_estimation.volume_estimator import VolumeEstimator
 from food_volume_estimation.depth_estimation.custom_modules import *
 from food_volume_estimation.food_segmentation.food_segmentator import FoodSegmentator
 from flask import Flask, request, jsonify, make_response, abort
@@ -12,10 +12,9 @@ import base64
 
 app = Flask(__name__)
 estimator = None
-density_db = None
 
 def load_volume_estimator(depth_model_architecture, depth_model_weights,
-        segmentation_model_weights, density_db_source):
+        segmentation_model_weights):
     """Loads volume estimator object and sets up its parameters."""
     # Create estimator object and intialize
     global estimator
@@ -58,8 +57,8 @@ def load_volume_estimator(depth_model_architecture, depth_model_weights,
     graph = tf.get_default_graph()
 
     # Load food density database
-    global density_db
-    density_db = DensityDatabase(density_db_source)
+    # global density_db
+    # density_db = DensityDatabase(density_db_source)
 
 @app.route('/predict', methods=['POST'])
 def volume_estimation():
@@ -105,18 +104,16 @@ def volume_estimation():
     volumes = [v * 1e6 for v in volumes]
     
     # Convert volumes to weight - assuming a single food type
-    db_entry = density_db.query(food_type)
-    density = db_entry[1]
-    weight = 0
-    for v in volumes:
-        weight += v * density
+    # db_entry = density_db.query(food_type)
+    # density = db_entry[1]
+    # weight = 0
+    # for v in volumes:
+    #     weight += v * density
 
     # Return values
     return_vals = {
-        'food_type_match': db_entry[0],
         'weight': weight,
         'volume': volumes,
-        'density': density,
     }
     return make_response(jsonify(return_vals), 200)
 
@@ -136,16 +133,10 @@ if __name__ == '__main__':
                         help='Path to segmentation model weights (.h5).',
                         metavar='/path/to/segmentation/weights.h5',
                         required=True)
-    parser.add_argument('--density_db_source', type=str,
-                        help=('Path to food density database (.xlsx) ' +
-                              'or Google Sheets ID.'),
-                        metavar='/path/to/plot/database.xlsx or <ID>',
-                        required=True)
     args = parser.parse_args()
 
     load_volume_estimator(args.depth_model_architecture,
                           args.depth_model_weights, 
-                          args.segmentation_model_weights,
-                          args.density_db_source)
+                          args.segmentation_model_weights)
     app.run(host='0.0.0.0')
 
