@@ -1,0 +1,304 @@
+TensorFlow 2.0 Upgrade Script
+-----------------------------
+Converted 32 files
+Detected 0 issues that require attention
+--------------------------------------------------------------------------------
+================================================================================
+Detailed log follows:
+
+================================================================================
+================================================================================
+Input tree: 'food_volume_estimation/'
+================================================================================
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/point_cloud_utils.py'
+ outputting to 'food_volume_estimation_new/point_cloud_utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/volume_estimator.py'
+ outputting to 'food_volume_estimation_new/volume_estimator.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/__init__.py'
+ outputting to 'food_volume_estimation_new/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/food_instance_segmentation.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/food_instance_segmentation.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/inspect_dataset.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/inspect_dataset.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/food_segmentator.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/food_segmentator.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/__init__.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/mrcnn/config.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/mrcnn/config.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/mrcnn/visualize.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/mrcnn/visualize.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/mrcnn/parallel_model.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/mrcnn/parallel_model.py'
+--------------------------------------------------------------------------------
+
+72:21: INFO: `name` passed to `name_scope`. Because you may be re-entering an existing scope, it is not safe to convert automatically,  the v2 name_scope does not support re-entering scopes by name.
+
+72:21: INFO: Renamed 'tf.name_scope' to 'tf.compat.v1.name_scope'
+132:8: INFO: Renamed 'tf.reset_default_graph' to 'tf.compat.v1.reset_default_graph'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/mrcnn/model.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/mrcnn/model.py'
+--------------------------------------------------------------------------------
+
+341:11: INFO: Renamed 'tf.log' to 'tf.math.log'
+341:23: INFO: Renamed 'tf.log' to 'tf.math.log'
+399:17: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+520:35: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+526:15: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+527:19: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+545:23: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+547:23: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+553:23: INFO: Renamed 'tf.random_shuffle' to 'tf.random.shuffle'
+558:23: INFO: Renamed 'tf.random_shuffle' to 'tf.random.shuffle'
+716:11: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+719:20: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+720:15: INFO: Renamed 'tf.sets.set_intersection' to 'tf.sets.intersection'
+722:15: INFO: Renamed 'tf.sparse_tensor_to_dense' to 'tf.sparse.to_dense'
+734:14: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+756:35: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+758:11: INFO: Renamed 'tf.sets.set_intersection' to 'tf.sets.intersection'
+760:11: INFO: Renamed 'tf.sparse_tensor_to_dense' to 'tf.sparse.to_dense'
+772:8: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+1035:14: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+1060:14: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+1126:22: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+1164:18: INFO: Renamed 'tf.where' to 'tf.compat.v1.where'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/mrcnn/__init__.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/mrcnn/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/food_segmentation/mrcnn/utils.py'
+ outputting to 'food_volume_estimation_new/food_segmentation/mrcnn/utils.py'
+--------------------------------------------------------------------------------
+
+202:9: INFO: Renamed 'tf.log' to 'tf.math.log'
+203:9: INFO: Renamed 'tf.log' to 'tf.math.log'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/segment_pair.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/segment_pair.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/segment_detector.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/segment_detector.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/ellipse_candidate_maker.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/ellipse_candidate_maker.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/ellipse_candidate.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/ellipse_candidate.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/ellipse_center_estimator.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/ellipse_center_estimator.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/ellipse_merger.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/ellipse_merger.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/ellipse.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/ellipse.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/ellipse_estimator.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/ellipse_estimator.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/ellipse_detector.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/ellipse_detector.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/segment.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/segment.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/ellipse_detection/__init__.py'
+ outputting to 'food_volume_estimation_new/ellipse_detection/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/depth_estimation/monovideo.py'
+ outputting to 'food_volume_estimation_new/depth_estimation/monovideo.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/depth_estimation/custom_modules.py'
+ outputting to 'food_volume_estimation_new/depth_estimation/custom_modules.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/depth_estimation/networks.py'
+ outputting to 'food_volume_estimation_new/depth_estimation/networks.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/depth_estimation/model_tests.py'
+ outputting to 'food_volume_estimation_new/depth_estimation/model_tests.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/depth_estimation/data_utils.py'
+ outputting to 'food_volume_estimation_new/depth_estimation/data_utils.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/depth_estimation/visualize_training.py'
+ outputting to 'food_volume_estimation_new/depth_estimation/visualize_training.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/depth_estimation/project.py'
+ outputting to 'food_volume_estimation_new/depth_estimation/project.py'
+--------------------------------------------------------------------------------
+
+199:34: INFO: Renamed keyword argument for tf.squeeze from squeeze_dims to axis
+228:9: INFO: Renamed 'tf.variable_scope' to 'tf.compat.v1.variable_scope'
+236:12: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+237:12: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+257:15: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+281:18: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+287:15: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+288:15: INFO: Changed tf.to_float call to tf.cast(..., dtype=tf.float32).
+315:9: INFO: `name` passed to `name_scope`. Because you may be re-entering an existing scope, it is not safe to convert automatically,  the v2 name_scope does not support re-entering scopes by name.
+
+315:9: INFO: Renamed 'tf.name_scope' to 'tf.compat.v1.name_scope'
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Processing file 'food_volume_estimation/depth_estimation/__init__.py'
+ outputting to 'food_volume_estimation_new/depth_estimation/__init__.py'
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+

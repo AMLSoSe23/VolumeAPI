@@ -76,7 +76,7 @@ def align_plane_with_axis(plane_params, axis):
     rot_axis_norm = rot_axis / np.sqrt(np.sum(rot_axis**2))
     angle = np.arccos(np.dot(plane_normal, axis))
     r = Rotation.from_rotvec(angle * rot_axis_norm)
-    rotation_matrix = r.as_dcm()
+    rotation_matrix = r.as_matrix()
     return translation_vec, rotation_matrix
 
 
@@ -160,7 +160,8 @@ def pretty_plotting(imgs, tiling, titles, suptitle=None):
     cols = str(tiling[1])
     fig = plt.figure()
     for r in range(tiling[0] * tiling[1]):
-        plt.subplot(rows + cols + str(r + 1))
+        # plt.subplot(rows + cols + str(r + 1))
+        plt.subplot(int(rows), int(cols), int(r + 1))
         plt.title(titles[r])
         plt.imshow(imgs[r])
 

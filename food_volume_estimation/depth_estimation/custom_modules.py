@@ -4,7 +4,8 @@ import cv2
 import tensorflow as tf
 import keras.backend as K
 from keras.layers import Layer
-from keras.utils import Sequence
+#from keras.utils import Sequence
+from tensorflow.keras.utils import Sequence
 from food_volume_estimation.depth_estimation.project import *
 
 

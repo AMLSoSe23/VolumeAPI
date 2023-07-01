@@ -9,6 +9,7 @@ from food_volume_estimation.food_segmentation.food_segmentator import FoodSegmen
 from flask import Flask, request, jsonify, make_response, abort
 import base64
 
+from tensorflow.keras.models import load_model
 
 app = Flask(__name__)
 estimator = None
@@ -27,17 +28,18 @@ def load_volume_estimator(depth_model_architecture, depth_model_weights,
                 'AugmentationLayer': AugmentationLayer,
                 'compute_source_loss': custom_losses.compute_source_loss}
         model_architecture_json = json.load(read_file)
-        estimator.monovideo = model_from_json(model_architecture_json,
-                                              custom_objects=objs)
-    estimator._VolumeEstimator__set_weights_trainable(estimator.monovideo,
-                                                      False)
-    estimator.monovideo.load_weights(depth_model_weights)
+        estimator.monovideo = model_from_json(model_architecture_json, custom_objects=objs)
+    #estimator.monovideo.load_weights(depth_model_weights)
+    #estimator.monovideo = load_model('models/my_model.h5', custom_objects=objs)
+    #estimator._VolumeEstimator__set_weights_trainable(estimator.monovideo, False)
+    #estimator.monovideo.save('models/my_model.h5')
+    estimator.depth_model = load_model('models/depth_extract.h5', custom_objects=objs)
     estimator.model_input_shape = (
         estimator.monovideo.inputs[0].shape.as_list()[1:])
-    depth_net = estimator.monovideo.get_layer('depth_net')
-    estimator.depth_model = Model(inputs=depth_net.inputs,
-                                  outputs=depth_net.outputs,
-                                  name='depth_model')
+    # depth_net = estimator.monovideo.get_layer('depth_net')
+    # estimator.depth_model = Model(inputs=depth_net.inputs,
+    #                               outputs=depth_net.outputs,
+    #                               name='depth_model')
     print('[*] Loaded depth estimation model.')
 
     # Depth model configuration
@@ -51,10 +53,6 @@ def load_volume_estimator(depth_model_architecture, depth_model_weights,
     estimator.segmentator = FoodSegmentator(segmentation_model_weights)
     # Set plate adjustment relaxation parameter
     estimator.relax_param = 0.01
-
-    # Need to define default graph due to Flask multiprocessing
-    global graph
-    graph = tf.get_default_graph()
 
     # Load food density database
     # global density_db
@@ -97,11 +95,11 @@ def volume_estimation():
         plate_diameter = 0
 
     # Estimate volumes
-    with graph.as_default():
-        volumes = estimator.estimate_volume(img, fov=70,
-            plate_diameter_prior=plate_diameter)
+    volumes = estimator.estimate_volume(img, fov=70, plate_diameter_prior=plate_diameter, plots_directory='assets/output/')
+    #volumes = estimator.estimate_volume(img, fov=70, plate_diameter_prior=plate_diameter)
     # Convert to mL
-    volumes = [v * 1e6 for v in volumes]
+    print(volumes[0][0])
+    volumes = [v[0] * 1e6 for v in volumes]
     
     # Convert volumes to weight - assuming a single food type
     # db_entry = density_db.query(food_type)
@@ -112,7 +110,6 @@ def volume_estimation():
 
     # Return values
     return_vals = {
-        'weight': weight,
         'volume': volumes,
     }
     return make_response(jsonify(return_vals), 200)
@@ -124,15 +121,15 @@ if __name__ == '__main__':
     parser.add_argument('--depth_model_architecture', type=str,
                         help='Path to depth model architecture (.json).',
                         metavar='/path/to/architecture.json',
-                        required=True)
+                        default='models/depth_architecture.json')
     parser.add_argument('--depth_model_weights', type=str,
                         help='Path to depth model weights (.h5).',
                         metavar='/path/to/depth/weights.h5',
-                        required=True)
+                        default='models/depth_weights.h5')
     parser.add_argument('--segmentation_model_weights', type=str,
                         help='Path to segmentation model weights (.h5).',
                         metavar='/path/to/segmentation/weights.h5',
-                        required=True)
+                        default='models/segmentation_weights.h5')
     args = parser.parse_args()
 
     load_volume_estimator(args.depth_model_architecture,

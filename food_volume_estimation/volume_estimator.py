@@ -402,8 +402,10 @@ class VolumeEstimator():
                 if plots_directory is not None:
                     if not os.path.exists(plots_directory):
                         os.makedirs(plots_directory)
-                    (img_name, ext) = os.path.splitext(
-                        os.path.basename(input_image))
+                    # (img_name, ext) = os.path.splitext(
+                    #     os.path.basename(input_image))
+                    img_name = 'output_image'
+                    ext = 'jpg'
                     filename = '{}_{}{}'.format(img_name, plt.gcf().number,
                                                 ext)
                     plt.savefig(os.path.join(plots_directory, filename))
