@@ -7,7 +7,7 @@ import json
 image_path = './assets/readme_assets/own_pics/two_potato.jpg'
 img = cv2.imread(image_path)
 _, img_encoded = cv2.imencode('.jpg', img)
-byte_array = img_encoded.tostring()
+byte_array = img_encoded.tobytes()
 
 # Prepare request payload
 payload = {
@@ -17,7 +17,7 @@ payload = {
 }
 
 # Send request to server
-response = requests.post('http://localhost:5000/predict', json=payload)
+response = requests.post('http://localhost:8000/predict', json=payload)
 
 # Parse response
 if response.status_code == 200:
