@@ -16,12 +16,13 @@ class DensityDatabase():
             self.density_database = pd.read_excel(
                 db_path, sheet_name=0, usecols=[0, 1])
         else:
+            self.density_database = pd.read_csv('food_volume_estimation\density_lookup\density.csv')
             # Read density database from Google Sheets URL
-            sheet = 'Sheet1'
-            url = 'https://docs.google.com/spreadsheets/d/{0}/gviz/tq?tqx=out:csv&sheet={1}'.format(
-                db_path, sheet)
-            self.density_database = pd.read_csv(url, usecols=[0, 1],
-                                                header=None)
+            # sheet = 'Sheet1'
+            # url = 'https://docs.google.com/spreadsheets/d/{0}/gviz/tq?tqx=out:csv&sheet={1}'.format(
+            #     db_path, sheet)
+            # self.density_database = pd.read_csv(url, usecols=[0, 1],
+            #                                     header=None)
         # Remove rows with NaN values
         self.density_database.dropna(inplace=True)
 
@@ -37,14 +38,17 @@ class DensityDatabase():
         """
         try:
             # Search for matching food in database
-            match = process.extractOne(food, self.density_database.values[:,0],
-                                       scorer=fuzz.partial_ratio,
-                                       score_cutoff=80)
-            db_entry = (
-                self.density_database.loc[
-                self.density_database[
-                self.density_database.columns[0]] == match[0]])
-            db_entry_vals = db_entry.values
-            return db_entry_vals[0]
+            
+            # Old method: fuzzy matching
+            # match = process.extractOne(food, self.density_database.values[:,0],
+            #                            scorer=fuzz.partial_ratio,
+            #                            score_cutoff=80)
+            # db_entry = (
+            #     self.density_database.loc[
+            #     self.density_database[
+            #     self.density_database.columns[0]] == match[0]])
+            # db_entry_vals = db_entry.values
+            # return db_entry_vals[0]
+            return self.density_database.loc[self.density_database['food'] == food, 'density'].values[0]
         except:
-            return ['None', 1]
+            return ['None', 1.2]
