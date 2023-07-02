@@ -135,5 +135,6 @@ if __name__ == '__main__':
     load_volume_estimator(args.depth_model_architecture,
                           args.depth_model_weights, 
                           args.segmentation_model_weights)
-    app.run(host='0.0.0.0')
+    
+    app.run(host='0.0.0.0', port=8000)
 
