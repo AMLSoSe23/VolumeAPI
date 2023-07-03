@@ -14,12 +14,13 @@ matplotlib = "*"
 pyntcloud = "*"
 pythreejs = "*"
 ipython = "*"
-flask = "*"
 fuzzywuzzy = "*"
 requests = "*"
 tensorflow = "*"
 h5py = "*"
 keras = "*"
+fastapi = "*"
+uvicorn = {version = "*", extras = ["standard"]}
 
 [dev-packages]
 

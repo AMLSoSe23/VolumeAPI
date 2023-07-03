@@ -1,18 +1,25 @@
-import argparse
 import numpy as np
 import cv2
 import tensorflow as tf
+import uvicorn
+
+from fastapi import FastAPI, HTTPException
+from typing import List
+from pydantic import BaseModel
+from tensorflow.keras.models import load_model
 from keras.models import Model, model_from_json
+
 from food_volume_estimation.volume_estimator import VolumeEstimator
 from food_volume_estimation.depth_estimation.custom_modules import *
 from food_volume_estimation.food_segmentation.food_segmentator import FoodSegmentator
-from flask import Flask, request, jsonify, make_response, abort
-import base64
 
-from tensorflow.keras.models import load_model
 
-app = Flask(__name__)
+app = FastAPI()
 estimator = None
+
+class EstimationData(BaseModel):
+    img: List[int]
+    plate_diameter: float
 
 def load_volume_estimator(depth_model_architecture, depth_model_weights,
         segmentation_model_weights):
@@ -29,17 +36,8 @@ def load_volume_estimator(depth_model_architecture, depth_model_weights,
                 'compute_source_loss': custom_losses.compute_source_loss}
         model_architecture_json = json.load(read_file)
         estimator.monovideo = model_from_json(model_architecture_json, custom_objects=objs)
-    #estimator.monovideo.load_weights(depth_model_weights)
-    #estimator.monovideo = load_model('models/my_model.h5', custom_objects=objs)
-    #estimator._VolumeEstimator__set_weights_trainable(estimator.monovideo, False)
-    #estimator.monovideo.save('models/my_model.h5')
-    estimator.depth_model = load_model('models/depth_extract.h5', custom_objects=objs)
-    estimator.model_input_shape = (
-        estimator.monovideo.inputs[0].shape.as_list()[1:])
-    # depth_net = estimator.monovideo.get_layer('depth_net')
-    # estimator.depth_model = Model(inputs=depth_net.inputs,
-    #                               outputs=depth_net.outputs,
-    #                               name='depth_model')
+    estimator.depth_model = load_model(depth_model_weights, custom_objects=objs)
+    estimator.model_input_shape = (estimator.monovideo.inputs[0].shape.as_list()[1:])
     print('[*] Loaded depth estimation model.')
 
     # Depth model configuration
@@ -54,87 +52,26 @@ def load_volume_estimator(depth_model_architecture, depth_model_weights,
     # Set plate adjustment relaxation parameter
     estimator.relax_param = 0.01
 
-    # Load food density database
-    # global density_db
-    # density_db = DensityDatabase(density_db_source)
+@app.post("/predict")
+async def volume_estimation(data: EstimationData):
+    img_byte_string = ' '.join([str(x) for x in data.img])
+    np_img = np.fromstring(img_byte_string, np.int8, sep=' ')
+    img = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
 
-@app.route('/predict', methods=['POST'])
-def volume_estimation():
-    """Receives an HTTP multipart request and returns the estimated 
-    volumes of the foods in the image given.
-
-    Multipart form data:
-        img: The image file to estimate the volume in.
-        plate_diameter: The expected plate diamater to use for depth scaling.
-        If omitted then no plate scaling is applied.
-
-    Returns:
-        The array of estimated volumes in JSON format.
-    """
-    # Decode incoming byte stream to get an image
-    try:
-        content = request.get_json()
-        img_encoded = content['img']
-        img_byte_string = ' '.join([str(x) for x in img_encoded]) # If in byteArray
-        #img_byte_string = base64.b64decode(img_encoded) # Decode if in base64
-        np_img = np.fromstring(img_byte_string, np.int8, sep=' ')
-        img = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
-    except Exception as e:
-        abort(406)
-
-    # Get food type
-    try:
-        food_type = content['food_type']
-    except Exception as e:
-        abort(406)
-
-    # Get expected plate diameter from form data or set to 0 and ignore
-    try:
-        plate_diameter = float(content['plate_diameter'])
-    except Exception as e:
-        plate_diameter = 0
-
-    # Estimate volumes
-    volumes = estimator.estimate_volume(img, fov=70, plate_diameter_prior=plate_diameter, plots_directory='assets/output/')
-    #volumes = estimator.estimate_volume(img, fov=70, plate_diameter_prior=plate_diameter)
-    # Convert to mL
-    print(volumes[0][0])
+    volumes = estimator.estimate_volume(img, fov=70, plate_diameter_prior=data.plate_diameter, plots_directory='assets/output/')
     volumes = [v[0] * 1e6 for v in volumes]
-    
-    # Convert volumes to weight - assuming a single food type
-    # db_entry = density_db.query(food_type)
-    # density = db_entry[1]
-    # weight = 0
-    # for v in volumes:
-    #     weight += v * density
 
-    # Return values
-    return_vals = {
-        'volume': volumes,
-    }
-    return make_response(jsonify(return_vals), 200)
+    return {"volume": volumes}
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description='Food volume estimation API.')
-    parser.add_argument('--depth_model_architecture', type=str,
-                        help='Path to depth model architecture (.json).',
-                        metavar='/path/to/architecture.json',
-                        default='models/depth_architecture.json')
-    parser.add_argument('--depth_model_weights', type=str,
-                        help='Path to depth model weights (.h5).',
-                        metavar='/path/to/depth/weights.h5',
-                        default='models/depth_weights.h5')
-    parser.add_argument('--segmentation_model_weights', type=str,
-                        help='Path to segmentation model weights (.h5).',
-                        metavar='/path/to/segmentation/weights.h5',
-                        default='models/segmentation_weights.h5')
-    args = parser.parse_args()
+    depth_model_architecture = 'models/depth_architecture.json'
+    depth_model_weights = 'models/depth_extract.h5'
+    segmentation_model_weights = 'models/segmentation_weights.h5'
 
-    load_volume_estimator(args.depth_model_architecture,
-                          args.depth_model_weights, 
-                          args.segmentation_model_weights)
+    load_volume_estimator(depth_model_architecture,
+                          depth_model_weights, 
+                          segmentation_model_weights)
     
-    app.run(host='0.0.0.0', port=8000)
+    uvicorn.run(app, host='0.0.0.0', port=8000)
 

@@ -12,9 +12,12 @@ byte_array = img_encoded.tobytes()
 # Prepare request payload
 payload = {
     'img': list(byte_array),
-    'food_type': 'Rice',
-    'plate_diameter': '0.35'
+    'plate_diameter': 0.35,
 }
+# payload = {
+#     'img': [1,2,3],
+#     'plate_diameter': 0.35,
+# }
 
 # Send request to server
 response = requests.post('http://localhost:8000/predict', json=payload)
