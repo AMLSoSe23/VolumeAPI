@@ -14,6 +14,6 @@ RUN python setup.py install
 COPY food_volume_estimation_app.py .
 COPY models/ models/
 
-EXPOSE 8000
+EXPOSE 5000
 
 CMD ["python", "food_volume_estimation_app.py"]
