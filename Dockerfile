@@ -16,7 +16,4 @@ COPY models/ models/
 
 EXPOSE 8000
 
-CMD ["python", "food_volume_estimation_app.py", \
-     "--depth_model_architecture", "models/depth_architecture.json", \
-     "--depth_model_weights", "models/depth_weights.h5", \
-     "--segmentation_model_weights", "models/segmentation_weights.h5"]
+CMD ["python", "food_volume_estimation_app.py"]
