@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 
 # Load requirements from file
 try:
-    with open('requirements_dev.txt', 'r') as req_file:
-    # with open('requirements.txt', 'r') as req_file:
+    # with open('requirements_dev.txt', 'r') as req_file:
+    with open('requirements.txt', 'r') as req_file:
         install_reqs = req_file.read()
 except Exception:
     logging.warning('[!] Failed at loading requirements file.')
