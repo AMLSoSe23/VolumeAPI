@@ -2,34 +2,37 @@ import requests
 import cv2
 import numpy as np
 import json
+import httpx
+import asyncio
 
-# Open and encode image
-image_path = './assets/readme_assets/own_pics/two_potato.jpg'
-img = cv2.imread(image_path)
-_, img_encoded = cv2.imencode('.jpg', img)
-byte_array = img_encoded.tobytes()
+def get_payload(image_path, plate_diameter):
+    # Open and encode image
+    img = cv2.imread(image_path)
+    _, img_encoded = cv2.imencode('.jpg', img)
+    byte_array = img_encoded.tobytes()
 
-# Prepare request payload
-payload = {
-    'img': list(byte_array),
-    'plate_diameter': 0.35,
-}
-# payload = {
-#     'img': [1,2,3],
-#     'plate_diameter': 0.35,
-# }
+    # Prepare request payload
+    payload = {
+        'img': list(byte_array),
+        'plate_diameter': plate_diameter,
+    }
+    return payload
 
-# Send request to server
-response = requests.post('http://localhost:8000/predict', json=payload)
+async def make_request(image_path, plate_diameter):
+    payload = get_payload(image_path, plate_diameter)
 
-# Parse response
-if response.status_code == 200:
-    result = response.json()
-    print("Picture: ", image_path.split('/')[-1])
-    print("Plate diameter: ", payload['plate_diameter'])
-    #print("Food Type Match:", result['food_type_match'])
-    #print("Weight:", result['weight'])
-    print("Volume:", result['volume'])
-    #print("Density:", result['density'])
-else:
-    print("Error:", response.status_code)
+    async with httpx.AsyncClient() as client:
+        response = await client.post('http://localhost:8000/predict', json=payload, timeout=60.0)
+
+    # Parse response
+    if response.status_code == 200:
+        result = response.json()
+        print("Picture: ", image_path.split('/')[-1])
+        print("Plate diameter: ", payload['plate_diameter'])
+        print("Volume:", result['volume'][0])
+    else:
+        print("Error:", response.status_code)
+
+if __name__ == '__main__':
+    asyncio.run(make_request('assets/readme_assets/own_pics/banana.jpg', 0.3))
+
