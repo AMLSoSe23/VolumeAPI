@@ -36,9 +36,18 @@ def load_volume_estimator(depth_model_architecture, depth_model_weights,
                 'compute_source_loss': custom_losses.compute_source_loss}
         model_architecture_json = json.load(read_file)
         estimator.monovideo = model_from_json(model_architecture_json, custom_objects=objs)
-    estimator.depth_model = load_model(depth_model_weights, custom_objects=objs)
+    
+    #----------------------------------------------
+    depth_net = estimator.monovideo.get_layer('depth_net')
+    estimator.depth_model = Model(inputs=depth_net.inputs,
+                                  outputs=depth_net.outputs,
+                                  name='depth_model')
+    estimator.depth_model.load_weights(depth_model_weights)
     estimator.model_input_shape = (estimator.monovideo.inputs[0].shape.as_list()[1:])
     print('[*] Loaded depth estimation model.')
+    # estimator.depth_model = load_model(depth_model_weights, custom_objects=objs)
+    # estimator.model_input_shape = (estimator.monovideo.inputs[0].shape.as_list()[1:])
+    # print('[*] Loaded depth estimation model.')
 
     # Depth model configuration
     MIN_DEPTH = 0.01

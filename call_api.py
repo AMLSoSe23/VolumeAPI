@@ -1,7 +1,4 @@
-import requests
 import cv2
-import numpy as np
-import json
 import httpx
 import asyncio
 
@@ -22,7 +19,7 @@ async def make_request(image_path, plate_diameter):
     payload = get_payload(image_path, plate_diameter)
 
     async with httpx.AsyncClient() as client:
-        response = await client.post('http://localhost:8000/predict', json=payload, timeout=60.0)
+        response = await client.post('http://localhost:5000/predict', json=payload, timeout=60.0)
 
     # Parse response
     if response.status_code == 200:
@@ -34,5 +31,5 @@ async def make_request(image_path, plate_diameter):
         print("Error:", response.status_code)
 
 if __name__ == '__main__':
-    asyncio.run(make_request('assets/readme_assets/own_pics/banana.jpg', 0.3))
+    asyncio.run(make_request('assets/readme_assets/own_pics/one_potato.jpg', 0.3))
 
