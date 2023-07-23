@@ -82,5 +82,5 @@ if __name__ == '__main__':
                           depth_model_weights, 
                           segmentation_model_weights)
     
-    uvicorn.run(app, host='0.0.0.0', port=5000)
+    uvicorn.run(app, host='0.0.0.0', port=2555)
 
